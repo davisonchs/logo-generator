@@ -1,5 +1,6 @@
 const inquirer = require('inquirer')
 const fs = require('fs')
+const {Circle, Triangle, Square} = require('./lib/shapes')
 
 const questions = [
     {
@@ -23,15 +24,21 @@ const questions = [
 ]
 
 
-inquirer.prompt(questions).then((answers) => {
-    switch (answers.shape) {
+inquirer.prompt(questions).then(({shape, shapeColor, text, textColor}) => {
+    let classObj;
+    switch (shape) {
         case 'Circle':
-
+            classObj =  new Circle(text, textColor, shapeColor);
             break;
         case 'Square':
-
+        classObj = new Square(text, textColor, shapeColor);
             break;
         default:
+            classObj =  new Triangle(text, textColor, shapeColor);
 
     }
+    fs.writeFile('logo.svg', classObj.render(), (err, res)=> {
+        if (err) throw err;
+        console.log('logo created');
+    })
 })
